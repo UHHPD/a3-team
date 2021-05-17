@@ -34,6 +34,8 @@ double prob(vector<int> daten, double mu) {
     p *= poi;
     //cout << p << "\t" << poi << endl;
   }
+
+  return p;
 }
 
 int main() {
@@ -47,7 +49,7 @@ int main() {
   }
 
   // Aufgabe 2a) berechnen
-  double mu = 3.11538;
+  const double mu = 3.11538;
   double probability = prob(daten, mu);
   cout  << probability << endl;
   //cout << "probability:\t" << probability << endl;
@@ -56,18 +58,18 @@ int main() {
   likeli << "μ\tL(μ)" << endl;
   map<double, double> mu_map;
   double prob_nll = -2 * log(probability);
-  for (mu = 0; mu <= 6; mu += .1) {
-    double p = prob(daten, mu);
+  for (double _mu = 0; _mu <= 6; _mu += .1) {
+    double p = prob(daten, _mu);
 
     // 2b)
-    likeli << mu << "\t" << p << endl;
+    likeli << _mu << "\t" << p << endl;
     //cout << mu << "\t" << p << endl;
 
     p = -2 * log(p);
-    mu_map[mu] = p;
-    nll << mu << "\t" << p << endl;
+    mu_map[_mu] = p;
+    nll << _mu << "\t" << p << endl;
     //cout << mu << "\t" << p << endl;
-    deltanll <<  mu << "\t" << p - prob_nll << endl;
+    deltanll <<  _mu << "\t" << p - prob_nll << endl;
   
   }
 
@@ -93,7 +95,7 @@ int main() {
     if (abs(d.second - currentmin) <= 1.0 && muPosError <= d.second)
         muPosError = d.first;
   }
-  cout << muNegError << "\t" << minMu << "\t" << muPosError << endl;
+  //cout << muNegError << "\t" << minMu << "\t" << muPosError << endl;
 
   //2e)
   double quotient = 1;
@@ -101,9 +103,10 @@ int main() {
     quotient *= poisson(mu, k) / poisson(k,k); //poisson(μ,k)
   }
   quotient = -2 * log(quotient);
+  cout << quotient << endl;
   //relative Abweichung
   double n_dof = 233;
   double z = (quotient - n_dof) / sqrt(2 * n_dof);
-  cout << "z:\t" << z << endl;
+  z = -2 * log(z);
 
 }
